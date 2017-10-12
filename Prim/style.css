@@ -1,6 +1,8 @@
 #mazeBox {
   display:flex;
   flex-wrap:wrap;
+  width:725px;
+  height:250px;
 }
 
 .border1 {

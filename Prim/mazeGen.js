@@ -1,8 +1,9 @@
 console.log('js connected')
 
 //changeable variables
-var mazeGrid = 128;
-var mazeSize = 6;
+var mazeGridY = 250 / 5
+var mazeGridX = 725 / 5
+var mazeSize = 5;
 // const colorOpen = 'rgb(156, 177, 191)';
 const colorOpen = 'rgb(255, 255, 255)';
 const colorPossible = 'rgb(24, 65, 105)';
@@ -26,8 +27,8 @@ makeMaze();
 
 //start the maze
 mazeBtn.addEventListener("click", function() {
-    let startY = randomBetween(2, mazeGrid-3);
-    let startX = randomBetween(2, mazeGrid-3);
+    let startY = randomBetween(2, mazeGridY-3);
+    let startX = randomBetween(2, mazeGridX-3);
     for(let i = 0; i < 4; i++){
       addPossible(startY + oneAround[i][0], startX + oneAround[i][1], oneAround[i][2])
     }
@@ -77,11 +78,11 @@ mazeBtn.addEventListener("click", function() {
 
 
 function makeMaze() {
-  mazeBox.style.height = (mazeGrid * mazeSize) + "px";
-  mazeBox.style.width = (mazeGrid * mazeSize) + "px";
-  for(let y = 0; y < mazeGrid; y++) {
+  // mazeBox.style.height = (mazeGrid * mazeSize) + "px";
+  // mazeBox.style.width = (mazeGrid * mazeSize) + "px";
+  for(let y = 0; y < mazeGridY; y++) {
     mazeArr[y] = [];
-    for(let x = 0; x < mazeGrid; x++){
+    for(let x = 0; x < mazeGridX; x++){
       let tempDiv = document.createElement('div');
       tempDiv.style.backgroundColor = colorClosed;
       tempDiv.style.width = mazeSize + "px";
@@ -95,7 +96,7 @@ function makeMaze() {
 
 function checkPossibleA(y, x, side) {
 //check inside mazeGrid
-  if(y < 0 || y >= mazeGrid || x < 0 || x >= mazeGrid){
+  if(y < 0 || y >= mazeGridY || x < 0 || x >= mazeGridX){
     return false;
   }
   if(mazeArr[y][x].style.backgroundColor == colorOpen){
@@ -109,7 +110,7 @@ function checkPossibleA(y, x, side) {
   for(let i = 0; i < 4; i++){
     newY = y + oneAround[i][0];
     newX = x +oneAround[i][1];
-    if(newY > -1 && newY < mazeGrid && newX > -1 && newX < mazeGrid) {
+    if(newY > -1 && newY < mazeGridY && newX > -1 && newX < mazeGridX) {
       if(mazeArr[newY][newX].style.backgroundColor == colorOpen){
         open.push(oneAround[i][2])
       }
@@ -134,7 +135,7 @@ function checkPossibleA(y, x, side) {
 
 function checkPossibleB(y, x) {
 //check inside mazeGrid
-  if(y < 0 || y >= mazeGrid || x < 0 || x >= mazeGrid){
+  if(y < 0 || y >= mazeGridY || x < 0 || x >= mazeGridX){
     return false;
   }
   let open = 0;
@@ -143,7 +144,7 @@ function checkPossibleB(y, x) {
   for(let i = 0; i < 4; i++){
     newY = y + oneAround[i][0];
     newX = x +oneAround[i][1];
-    if(newY > -1 && newY < mazeGrid && newX > -1 && newX < mazeGrid) {
+    if(newY > -1 && newY < mazeGridY && newX > -1 && newX < mazeGridX) {
       if(mazeArr[newY][newX].style.backgroundColor == colorOpen){
         open++
       }
