@@ -1,11 +1,13 @@
 console.log('js connected')
 
 //changeable variables
-var mazeGrid = 32;
+var mazeGrid = 128;
 var mazeSize = 6;
-const colorOpen = 'rgb(156, 177, 191)';
+// const colorOpen = 'rgb(156, 177, 191)';
+const colorOpen = 'rgb(255, 255, 255)';
 const colorPossible = 'rgb(24, 65, 105)';
-const colorClosed = 'rgb(19, 49, 77)';
+// const colorClosed = 'rgb(19, 49, 77)';
+const colorClosed = 'rgb(0,0,0)';
 
 //initialization variables
 var mazeBox = document.getElementById('mazeBox');
@@ -32,51 +34,44 @@ mazeBtn.addEventListener("click", function() {
     mazeArr[startY][startX].style.backgroundColor = colorOpen;
     console.log(startY + " , " + startX)
     console.log(possibleArr)
-})
+    var loop = setInterval(step, 5)
 
-//run a step in the maze
-stepBtn.addEventListener('click', function() {
-  //1 - pick random from possibles
-  let randPos = randomBetween(0, possibleArr.length -1)
-  //2- check is pick IS possible
-  let isGood = false;
-  let newY = possibleArr[randPos][0]
-  let newX = possibleArr[randPos][1]
-  let side = possibleArr[randPos][2]
-  isGood = checkPossibleA(newY, newX, side)
-  if (isGood) {
-    //3 - change ONE spaces to open
-    mazeArr[newY][newX].style.backgroundColor = colorOpen;
-    //mazeArr[(newY + oneAround[side][0])][(newX + oneAround[side][1])].style.backgroundColor = colorOpen;
-
-    //4 - remove from possibleArr
-    possibleArr.splice(randPos, 1)
-
-    //5 - update possibleArr
-    //check sides around pos A
-    for(let p = 0; p < 4; p++){
-      //check sides around pos A
-      let isPosAGood = checkPossibleA(newY + oneAround[p][0], newX + oneAround[p][1],  + oneAround[p][2])
-      if(isPosAGood){
-        addPossible(newY + oneAround[p][0], newX + oneAround[p][1],  + oneAround[p][2])
+    function step() {
+      if(possibleArr.length <= 0){
+        clearInterval(loop)
+      } else {
+        //1 - pick random from possibles
+        let randPos = randomBetween(0, possibleArr.length -1)
+        //2- check is pick IS possible
+        let isGood = false;
+        let newY = possibleArr[randPos][0]
+        let newX = possibleArr[randPos][1]
+        let side = possibleArr[randPos][2]
+        isGood = checkPossibleA(newY, newX, side)
+        if (isGood) {
+          //3 - change ONE spaces to open
+          mazeArr[newY][newX].style.backgroundColor = colorOpen;
+          //4 - remove from possibleArr
+          possibleArr.splice(randPos, 1)
+          //5 - update possibleArr
+          for(let p = 0; p < 4; p++){
+            //check sides around pos A
+            let isPosAGood = checkPossibleA(newY + oneAround[p][0], newX + oneAround[p][1],  + oneAround[p][2])
+            if(isPosAGood){
+              addPossible(newY + oneAround[p][0], newX + oneAround[p][1],  + oneAround[p][2])
+            }
+          }
+        } else {
+          //NOT POSSIBLE
+          //remove and change color to colorClosed
+          mazeArr[newY][newX].style.backgroundColor = colorClosed;
+          possibleArr.splice(randPos, 1)
+        }
       }
-      //check sides around pos B
-      // let isPosBGood = checkPossibleA((newY + oneAround[side][0]) + oneAround[p][0], (newX + oneAround[side][1]) + oneAround[p][1],  + oneAround[p][2])
-      // if(isPosBGood){
-      //   addPossible((newY + oneAround[side][0]) + oneAround[p][0], (newX + oneAround[side][1]) + oneAround[p][1],  + oneAround[p][2])
-      // }
     }
-  } else {
-    //NOT POSSIBLE
-    //remove and change color to colorClosed
-    mazeArr[newY][newX].style.backgroundColor = colorClosed;
-    possibleArr.splice(randPos, 1)
-  }
-
-
-
-
 })
+
+
 
 // mazeArr[startY][startX].style.backgroundColor
 
@@ -163,7 +158,8 @@ function checkPossibleB(y, x) {
 
 function addPossible(y, x, side) {
   possibleArr.push([y, x, side])
-  mazeArr[y][x].style.backgroundColor = colorPossible;
+  mazeArr[y][x].style.backgroundColor = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+  //mazeArr[y][x].style.backgroundColor = colorPossible;
 }
 
 function oppositeSide(side) {
